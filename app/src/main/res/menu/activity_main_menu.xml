@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="beacons"
+        app:showAsAction="never"
+        android:id="@+id/action_beacons"/>
+
+    <item android:title="classes"
+        app:showAsAction="never"
+        android:id="@+id/action_classes"/>
+
+    <item android:title="training"
+        app:showAsAction="never"
+        android:id="@+id/action_training"/>
+
+
+
+</menu>
