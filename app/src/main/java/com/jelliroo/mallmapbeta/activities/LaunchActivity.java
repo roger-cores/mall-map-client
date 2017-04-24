@@ -41,6 +41,7 @@ public class LaunchActivity extends AppCompatActivity {
         buildings.add("STAR MALL");
         buildings.add("CINEMAX");
         buildings.add("PALLADIUM");
+        buildings.add("PALLADIUM 2");
         adapter.setBuildings(buildings);
 
         recyclerView.setAdapter(adapter);

@@ -104,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(view.getContext().INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
 
-                String destination = new ArrayList<>(classes.keySet()).get(position);
-                if(location != null)
-                    refreshPath(location.getLabel(), destination);
+//                String destination = gotoClassTextView.getText().toString();
+//                if(location != null)
+//                    refreshPath(location.getLabel(), destination);
             }
         });
 
@@ -501,6 +501,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshPath(String source, String destination){
+        if(classes.get(destination) == null || classes.get(source) == null) return;
+        
         RouteEndPoint routeEndPoint = retrofit.create(RouteEndPoint.class);
         Call<List<String>> callForRoute = routeEndPoint.getShortestPath(source, destination);
         callForRoute.enqueue(new Callback<List<String>>() {

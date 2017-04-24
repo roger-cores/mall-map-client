@@ -79,13 +79,15 @@ public class PinView extends SubsamplingScaleImageView{
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // Don't draw pin before image is ready so it doesn't move around during       setup.
+        // Don't draw pin before image is ready so it doesn't move around during setup.
         if (!isReady()) {
             return;
         }
 
+        //initialize
         drawnPins = new ArrayList<>();
 
+        //initialize required objects
         Paint paint = new Paint();
         Paint linePaint = new Paint();
         paint.setAntiAlias(true);
@@ -93,6 +95,7 @@ public class PinView extends SubsamplingScaleImageView{
 
 
         MapPin previous = null;
+        //iterate through the pins
         for (int i = 0; i < mapPins.size(); i++) {
             MapPin mPin = mapPins.get(i);
 
@@ -123,18 +126,19 @@ public class PinView extends SubsamplingScaleImageView{
             float vX = vPin.x - (bmpPin.getWidth()/2);
             float vY = vPin.y - (bmpPin.getHeight());
 
-            if(routeEnabled)
-            if(i == 0) previous = mPin;
-            else {
-                PointF vPin2 = sourceToViewCoord(previous.getPoint());
+            if(routeEnabled) {
+                if (i == 0) previous = mPin;
+                else {
+                    PointF vPin2 = sourceToViewCoord(previous.getPoint());
 
-                linePaint.setColor(Color.parseColor("#16a085"));
-                linePaint.setStrokeWidth(20 * (density / 420f));
-                canvas.drawLine(vPin.x, vPin.y, vPin2.x, vPin2.y, linePaint);
-                linePaint.setColor(Color.parseColor("#3498db"));
-                linePaint.setStrokeWidth(10 * (density / 420f));
-                canvas.drawLine(vPin.x, vPin.y, vPin2.x, vPin2.y, linePaint);
-                previous = mPin;
+                    linePaint.setColor(Color.parseColor("#16a085"));
+                    linePaint.setStrokeWidth(20 * (density / 420f));
+                    canvas.drawLine(vPin.x, vPin.y, vPin2.x, vPin2.y, linePaint);
+                    linePaint.setColor(Color.parseColor("#3498db"));
+                    linePaint.setStrokeWidth(10 * (density / 420f));
+                    canvas.drawLine(vPin.x, vPin.y, vPin2.x, vPin2.y, linePaint);
+                    previous = mPin;
+                }
             }
 
 
