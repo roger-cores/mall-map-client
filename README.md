@@ -14,13 +14,17 @@
 <br/>
 
 ### Add upto five WiFi/Bluetooth beacons
-![Add Beacons](/screenshots/2_add_beacons.png?raw=true "Add Beacons")
+<img align="left" width="360" height="640" src="https://raw.githubusercontent.com/roger-cores/mall-map-client/master/screenshots/2_add_beacons.png">
+<br/>
 
 ### Collect data from each room
-![Collect Data](/screenshots/3_collect_training.png?raw=true "Collect Data")
+<img align="left" width="360" height="640" src="https://raw.githubusercontent.com/roger-cores/mall-map-client/master/screenshots/3_collect_training.png">
+<br/>
 
 ### Localize
-![Localize](/screenshots/4_localize.png?raw=true "Localize")
+<img align="left" width="360" height="640" src="https://raw.githubusercontent.com/roger-cores/mall-map-client/master/screenshots/4_localize.png">
+<br/>
 
 ### Get efficient routing
-![Route](/screenshots/5_route.png?raw=true "Route")
+<img align="left" width="360" height="640" src="https://raw.githubusercontent.com/roger-cores/mall-map-client/master/screenshots/5_route.png">
+<br/>
