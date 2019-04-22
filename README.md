@@ -10,7 +10,7 @@
 ## Demo Screenshots
 
 ### Add nodes
-![Add Nodes](/screenshots/1_add_classes.png?raw=true&s=200 "Add Nodes")
+<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/roger-cores/mall-map-client/master/screenshots/1_add_classes.png">
 
 ### Add upto five WiFi/Bluetooth beacons
 ![Add Beacons](/screenshots/2_add_beacons.png?raw=true "Add Beacons")
