@@ -10,21 +10,16 @@
 ## Demo Screenshots
 
 ### Add nodes
-<img align="left" width="360" height="640" src="https://raw.githubusercontent.com/roger-cores/mall-map-client/master/screenshots/1_add_classes.png">
-&nbsp;
+![Add Nodes](/screenshots/1_add_classes.jpg?raw=true&s=200 "Add Nodes")
 
 ### Add upto five WiFi/Bluetooth beacons
-<img align="left" width="360" height="640" src="https://raw.githubusercontent.com/roger-cores/mall-map-client/master/screenshots/2_add_beacons.png">
-<br/>
+![Add Beacons](/screenshots/2_add_beacons.jpg?raw=true "Add Beacons")
 
 ### Collect data from each room
-<img align="left" width="360" height="640" src="https://raw.githubusercontent.com/roger-cores/mall-map-client/master/screenshots/3_collect_training.png">
-<br/>
+![Collect Data](/screenshots/3_collect_training.jpg?raw=true "Collect Data")
 
 ### Localize
-<img align="left" width="360" height="640" src="https://raw.githubusercontent.com/roger-cores/mall-map-client/master/screenshots/4_localize.png">
-<br/>
+![Localize](/screenshots/4_localize.jpg?raw=true "Localize")
 
 ### Get efficient routing
-<img align="left" width="360" height="640" src="https://raw.githubusercontent.com/roger-cores/mall-map-client/master/screenshots/5_route.png">
-<br/>
+![Route](/screenshots/5_route.jpg?raw=true "Route")
