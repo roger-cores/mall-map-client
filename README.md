@@ -10,7 +10,7 @@
 ## Demo Screenshots
 
 ### Add nodes
-![Add Nodes](/screenshots/1_add_classes.png?raw=true "Add Nodes" =500x)
+![Add Nodes](/screenshots/1_add_classes.png?raw=true&s=200 "Add Nodes")
 
 ### Add upto five WiFi/Bluetooth beacons
 ![Add Beacons](/screenshots/2_add_beacons.png?raw=true "Add Beacons")
