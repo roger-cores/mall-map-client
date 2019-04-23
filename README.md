@@ -1,4 +1,5 @@
-# Mall Map Android client is a part of a framework that allows efficient set up of an indoor localizer and router for buildings like large malls using WiFi RSSI strength values.
+# Mall Map
+This android client is a part of a framework that allows efficient set up of an indoor localizer and router for maps like large malls using WiFi RSSI strength values.
 
 ## Features
 

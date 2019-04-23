@@ -34,15 +34,7 @@ public class FloorActivity extends AppCompatActivity {
         adapter.setActivity(this);
 
         List<String> buildings = new ArrayList<>();
-        buildings.add("BASE 4");
-        buildings.add("BASE 3");
-        buildings.add("BASE 2");
-        buildings.add("BASE 1");
-        buildings.add("FLOOR 1");
-        buildings.add("FLOOR 2");
-        buildings.add("FLOOR 3");
-        buildings.add("FLOOR 4");
-        adapter.setBuildings(buildings);
+
 
         recyclerView.setAdapter(adapter);
 

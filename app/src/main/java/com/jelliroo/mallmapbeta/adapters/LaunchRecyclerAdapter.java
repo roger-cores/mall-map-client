@@ -11,9 +11,12 @@ import com.jelliroo.mallmapbeta.R;
 import com.jelliroo.mallmapbeta.activities.FloorActivity;
 import com.jelliroo.mallmapbeta.activities.LaunchActivity;
 import com.jelliroo.mallmapbeta.activities.MainActivity;
+import com.jelliroo.mallmapbeta.bean.ClassRecord;
+import com.jelliroo.mallmapbeta.bean.Map;
 import com.jelliroo.mallmapbeta.vholders.LaunchViewHolder;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -22,7 +25,7 @@ import java.util.List;
 
 public class LaunchRecyclerAdapter extends RecyclerView.Adapter<LaunchViewHolder> {
 
-    List<String> buildings = new ArrayList<>();
+    private LinkedHashMap<String, Map> maps = new LinkedHashMap<>();
     Activity activity;
 
     @Override
@@ -32,20 +35,15 @@ public class LaunchRecyclerAdapter extends RecyclerView.Adapter<LaunchViewHolder
 
     @Override
     public void onBindViewHolder(final LaunchViewHolder holder, int position) {
-        holder.textView.setText(buildings.get(position));
+        Map map = new ArrayList<>(maps.values()).get(position);
+        holder.textView.setText(map.getLabel());
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(activity == null) return;
 
                 Intent intent;
-
-                if(activity instanceof LaunchActivity){
-                    intent = new Intent(activity, FloorActivity.class);
-                } else {
-                    intent = new Intent(activity, MainActivity.class);
-
-                }
+                intent = new Intent(activity, MainActivity.class);
 
                 activity.startActivity(intent);
             }
@@ -54,14 +52,26 @@ public class LaunchRecyclerAdapter extends RecyclerView.Adapter<LaunchViewHolder
 
     @Override
     public int getItemCount() {
-        return buildings.size();
+        return maps.size();
     }
 
     public void setActivity(Activity activity) {
         this.activity = activity;
     }
 
-    public void setBuildings(List<String> buildings) {
-        this.buildings = buildings;
+    public void setMaps(LinkedHashMap<String, Map> maps) {
+        this.maps = maps;
+    }
+
+    public void addMap(Map map) {
+        this.maps.put(map.getLabel(), map);
+    }
+
+    public void removeMap(String key) {
+        this.maps.remove(key);
+    }
+
+    public void clear() {
+        maps.clear();
     }
 }

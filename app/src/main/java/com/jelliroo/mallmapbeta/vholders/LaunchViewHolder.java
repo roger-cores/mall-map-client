@@ -20,4 +20,8 @@ public class LaunchViewHolder extends RecyclerView.ViewHolder {
         view = itemView;
         textView = (TextView) itemView.findViewById(R.id.class_name);
     }
+
+    public String getMapName() {
+        return textView.getText().toString();
+    }
 }
