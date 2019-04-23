@@ -29,4 +29,6 @@ public interface MapEndPoint {
     @POST("map_image/post")
     Call<Map> createMapImage(@Part("label") RequestBody label, @Part MultipartBody.Part image);
 
+
+
 }

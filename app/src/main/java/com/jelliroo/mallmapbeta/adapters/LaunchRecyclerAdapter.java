@@ -35,7 +35,7 @@ public class LaunchRecyclerAdapter extends RecyclerView.Adapter<LaunchViewHolder
 
     @Override
     public void onBindViewHolder(final LaunchViewHolder holder, int position) {
-        Map map = new ArrayList<>(maps.values()).get(position);
+        final Map map = new ArrayList<>(maps.values()).get(position);
         holder.textView.setText(map.getLabel());
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +44,7 @@ public class LaunchRecyclerAdapter extends RecyclerView.Adapter<LaunchViewHolder
 
                 Intent intent;
                 intent = new Intent(activity, MainActivity.class);
+                intent.putExtra("floor_label", map.getLabel());
 
                 activity.startActivity(intent);
             }

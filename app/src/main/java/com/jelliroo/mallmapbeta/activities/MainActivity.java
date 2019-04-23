@@ -24,13 +24,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.jelliroo.mallmapbeta.R;
@@ -48,14 +45,17 @@ import com.jelliroo.mallmapbeta.endpoints.ClassEndPoint;
 import com.jelliroo.mallmapbeta.endpoints.KNNEndPoint;
 import com.jelliroo.mallmapbeta.endpoints.ProductEndPoint;
 import com.jelliroo.mallmapbeta.endpoints.RouteEndPoint;
-import com.jelliroo.mallmapbeta.enums.ClassType;
 import com.jelliroo.mallmapbeta.enums.PinType;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import okhttp3.Route;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,14 +79,48 @@ public class MainActivity extends AppCompatActivity {
     private ClassRecord location;
     private AutoCompleteTextView gotoClassTextView;
 
+    private String floorLabel;
+
+    public void downloadFileAsync(final String downloadUrl) throws Exception {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(downloadUrl).build();
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Failed to download file: " + response);
+                }
+                File rootDataDir = MainActivity.this.getFilesDir();
+                rootDataDir.mkdir();
+                File floorsDir = new File(rootDataDir.getCanonicalPath() + File.separator + "floors");
+                floorsDir.mkdir();
+                File imageFile = new File(floorsDir.getCanonicalPath() + File.separator + floorLabel);
+
+                FileOutputStream fos = new FileOutputStream(imageFile);
+                fos.write(response.body().bytes());
+                fos.close();
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        floorLabel = getIntent().getStringExtra("floor_label");
+        try {
+            downloadFileAsync(getString(R.string.auth_base_url) + "map_image/" + floorLabel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mWifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+        mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.auth_base_url))
@@ -216,6 +250,8 @@ public class MainActivity extends AppCompatActivity {
 
         imageView = (PinView)findViewById(R.id.imageView);
         imageView.setImage(ImageSource.resource(R.drawable.floor_3r));
+
+
         imageView.setRouteEnabled(true);
 
         imageView.setOnTouchListener(new View.OnTouchListener() {

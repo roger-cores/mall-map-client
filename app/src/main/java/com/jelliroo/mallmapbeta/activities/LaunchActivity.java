@@ -153,7 +153,7 @@ public class LaunchActivity extends AppCompatActivity {
                             File imageFile = new File(getRealPathFromURI(LaunchActivity.this, selectedImage));
                             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
                             MultipartBody.Part body = MultipartBody.Part.createFormData("image", imageFile.getName(), requestFile);
-                            RequestBody labelRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile.getName());
+                            RequestBody labelRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), floorName.getText().toString().trim());
                             MapEndPoint mapEndPoint = retrofit.create(MapEndPoint.class);
                             Call<Map> callForCreateMapImage = mapEndPoint.createMapImage(labelRequestBody, body);
                             callForCreateMapImage.enqueue(new Callback<Map>() {
