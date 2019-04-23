@@ -7,9 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -99,11 +102,25 @@ public class MainActivity extends AppCompatActivity {
                 rootDataDir.mkdir();
                 File floorsDir = new File(rootDataDir.getCanonicalPath() + File.separator + "floors");
                 floorsDir.mkdir();
-                File imageFile = new File(floorsDir.getCanonicalPath() + File.separator + floorLabel);
+                final File imageFile = new File(floorsDir.getCanonicalPath() + File.separator + floorLabel);
 
                 FileOutputStream fos = new FileOutputStream(imageFile);
                 fos.write(response.body().bytes());
                 fos.close();
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = BitmapFactory.decodeFile(imageFile.getCanonicalPath());
+                            imageView.setImage(ImageSource.bitmap(bitmap));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
             }
         });
     }
