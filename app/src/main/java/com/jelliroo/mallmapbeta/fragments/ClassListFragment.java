@@ -1,6 +1,7 @@
 package com.jelliroo.mallmapbeta.fragments;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -65,8 +66,14 @@ public class ClassListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_class_list, container, false);
         recyclerView = (RecyclerView) v;
 
+        String floor_label = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getApplicationContext()).getString("floor_label", null);
+        if(floor_label == null) return v; //TODO handle error
+
+        String baseUrl = this.getString(R.string.auth_base_url) + "floor/" + floor_label +  "/";
+
+
         retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.auth_base_url))
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

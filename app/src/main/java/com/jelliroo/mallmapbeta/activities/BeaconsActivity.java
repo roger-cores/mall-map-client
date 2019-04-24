@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -121,9 +122,15 @@ public class BeaconsActivity extends AppCompatActivity {
 
         checkLocationPermission();
 
+        String floor_label = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext()).getString("floor_label", null);
+        if(floor_label == null) finish(); //TODO handle error
+
+        String baseUrl = this.getString(R.string.auth_base_url) + "floor/" + floor_label +  "/";
+
+
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.auth_base_url))
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

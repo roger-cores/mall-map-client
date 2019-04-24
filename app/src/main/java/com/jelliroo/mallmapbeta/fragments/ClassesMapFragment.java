@@ -1,7 +1,12 @@
 package com.jelliroo.mallmapbeta.fragments;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,6 +19,7 @@ import android.widget.EditText;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.jelliroo.mallmapbeta.R;
 import com.jelliroo.mallmapbeta.activities.ClassesActivity;
+import com.jelliroo.mallmapbeta.activities.MainActivity;
 import com.jelliroo.mallmapbeta.bean.ClassRecord;
 import com.jelliroo.mallmapbeta.bean.MapPin;
 import com.jelliroo.mallmapbeta.customviews.PinView;
@@ -21,8 +27,13 @@ import com.jelliroo.mallmapbeta.endpoints.ClassEndPoint;
 import com.jelliroo.mallmapbeta.enums.ClassType;
 import com.jelliroo.mallmapbeta.enums.PinType;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,6 +56,8 @@ public class ClassesMapFragment extends Fragment {
 
     private ClassType classType;
 
+    private String floorLabel;
+
 
     public ClassesMapFragment() {
 
@@ -63,6 +76,47 @@ public class ClassesMapFragment extends Fragment {
         classType = ClassType.valueOf(getArguments().getString("classType"));
     }
 
+    public void downloadFileAsync(final String downloadUrl, final Activity context) throws Exception {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(downloadUrl).build();
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Failed to download file: " + response);
+                }
+                File rootDataDir = context.getFilesDir();
+                rootDataDir.mkdir();
+                File floorsDir = new File(rootDataDir.getCanonicalPath() + File.separator + "floors");
+                floorsDir.mkdir();
+                final File imageFile = new File(floorsDir.getCanonicalPath() + File.separator + floorLabel);
+
+                FileOutputStream fos = new FileOutputStream(imageFile);
+                fos.write(response.body().bytes());
+                fos.close();
+                context.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = BitmapFactory.decodeFile(imageFile.getCanonicalPath());
+                            imageView.setImage(ImageSource.bitmap(bitmap));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,10 +126,19 @@ public class ClassesMapFragment extends Fragment {
         className = (EditText) v.findViewById(R.id.editText);
         placeMarkerButton = (Button) v.findViewById(R.id.button);
 
-        imageView.setImage(ImageSource.resource(R.drawable.floor_3r));
+        floorLabel = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getApplicationContext()).getString("floor_label", null);
+        if(floorLabel == null) return v; //TODO handle error
+        imageView.setImage(ImageSource.resource(R.drawable.default_floor));
+        try {
+            downloadFileAsync(getString(R.string.auth_base_url) + "map_image/" + floorLabel, getActivity());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String baseUrl = this.getString(R.string.auth_base_url) + "floor/" + floorLabel +  "/";
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.auth_base_url))
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

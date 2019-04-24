@@ -13,6 +13,7 @@ import android.graphics.PointF;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -129,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        floorLabel = getIntent().getStringExtra("floor_label");
+        floorLabel = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext()).getString("floor_label", null);
+        if(floorLabel == null) finish(); //TODO show error message
         try {
             downloadFileAsync(getString(R.string.auth_base_url) + "map_image/" + floorLabel);
         } catch (Exception e) {
@@ -139,8 +141,11 @@ public class MainActivity extends AppCompatActivity {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
+        String baseUrl = this.getString(R.string.auth_base_url) + "floor/" + floorLabel +  "/";
+
+
         retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.auth_base_url))
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -266,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         imageView = (PinView)findViewById(R.id.imageView);
-        imageView.setImage(ImageSource.resource(R.drawable.floor_3r));
+        imageView.setImage(ImageSource.resource(R.drawable.default_floor));
 
 
         imageView.setRouteEnabled(true);

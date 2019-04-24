@@ -1,6 +1,7 @@
 package com.jelliroo.mallmapbeta.fragments;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,6 +20,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.jelliroo.mallmapbeta.R;
 import com.jelliroo.mallmapbeta.adapters.LinkRecyclerAdapter;
 import com.jelliroo.mallmapbeta.bean.ClassRecord;
@@ -63,15 +65,20 @@ public class LinkFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_link, null);
+        String floor_label = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getApplicationContext()).getString("floor_label", null);
+        if(floor_label == null) return view; //TODO handle error
+
+        String baseUrl = this.getString(R.string.auth_base_url) + "floor/" + floor_label +  "/";
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.auth_base_url))
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
 
 
-        final View view = inflater.inflate(R.layout.fragment_link, null);
+
 
         sourceSpinner = (Spinner) view.findViewById(R.id.source_class_spinner);
         destinationSpinner = (Spinner) view.findViewById(R.id.destination_class_spinner);

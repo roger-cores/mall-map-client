@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -66,10 +67,16 @@ public class TrainingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mWifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+        mWifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+        String floor_label = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("floor_label", null);
+        if(floor_label == null) finish(); //TODO handle error
+
+        String baseUrl = this.getString(R.string.auth_base_url) + "floor/" + floor_label +  "/";
+
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.auth_base_url))
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

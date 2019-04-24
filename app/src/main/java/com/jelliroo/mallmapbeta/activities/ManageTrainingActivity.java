@@ -1,6 +1,7 @@
 package com.jelliroo.mallmapbeta.activities;
 
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -41,8 +42,14 @@ public class ManageTrainingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_training);
 
+        String floor_label = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("floor_label", null);
+        if(floor_label == null) finish(); //TODO handle error
+
+        String baseUrl = this.getString(R.string.auth_base_url) + "floor/" + floor_label +  "/";
+
+
         retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.auth_base_url))
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

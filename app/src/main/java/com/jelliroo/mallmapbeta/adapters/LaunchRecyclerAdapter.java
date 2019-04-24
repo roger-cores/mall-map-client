@@ -2,6 +2,7 @@ package com.jelliroo.mallmapbeta.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,7 @@ public class LaunchRecyclerAdapter extends RecyclerView.Adapter<LaunchViewHolder
 
                 Intent intent;
                 intent = new Intent(activity, MainActivity.class);
-                intent.putExtra("floor_label", map.getLabel());
+                PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext()).edit().putString("floor_label", map.getLabel()).apply();
 
                 activity.startActivity(intent);
             }
